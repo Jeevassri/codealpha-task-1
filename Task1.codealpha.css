@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+// Structure to hold course information
+struct Course {
+    string name;
+    double gradePoints;
+    int creditHours;
+    double gradePointTotal;
+};
+
+int main() {
+    int numCourses;
+
+    cout << "Enter the number of courses for this semester: ";
+    cin >> numCourses;
+
+    // Input validation loop for number of courses
+    while (numCourses <= 0) {
+        cout << "Number of courses must be positive. Please re-enter: ";
+        cin >> numCourses;
+    }
+
+    // Clear the input buffer
+    cin.ignore();
+
+    // Create a vector to store course data
+    vector<Course> courses(numCourses);
+    double semesterTotalGradePoints = 0;
+    int semesterTotalCredits = 0;
+
+    // Loop to get details for each course
+    for (int i = 0; i < numCourses; ++i) {
+        cout << "\n--- Course " << i + 1 << " ---" << endl;
+
+        cout << "Enter course name: ";
+        getline(cin, courses[i].name);
+
+        cout << "Enter grade points for " << courses[i].name << ": ";
+        cin >> courses[i].gradePoints;
+
+        // Input validation loop for grade points
+        while (courses[i].gradePoints < 0) {
+            cout << "Grade points cannot be negative. Please re-enter: ";
+            cin >> courses[i].gradePoints;
+        }
+
+        cout << "Enter credit hours for " << courses[i].name << ": ";
+        cin >> courses[i].creditHours;
+
+        // Input validation loop for credit hours
+        while (courses[i].creditHours < 0) {
+            cout << "Credit hours cannot be negative. Please re-enter: ";
+            cin >> courses[i].creditHours;
+        }
+
+        // Calculate the total grade points for this course
+        courses[i].gradePointTotal = courses[i].gradePoints * courses[i].creditHours;
+        semesterTotalGradePoints += courses[i].gradePointTotal;
+        semesterTotalCredits += courses[i].creditHours;
+    }
+
+    // Calculate the semester GPA
+    double semesterGPA = 0;
+    if (semesterTotalCredits > 0) {
+        semesterGPA = semesterTotalGradePoints / semesterTotalCredits;
+    }
+
+    // Output for the semester
+    cout << "\n--- Semester Summary ---" << endl;
+    cout << "----------------------------------------" << endl;
+    cout << left << setw(20) << "Course Name" << setw(15) << "Grade Points" << setw(15) << "Credit Hours" << setw(15) << "Total Grade Points" << endl;
+    cout << "----------------------------------------" << endl;
+    for (const auto& course : courses) {
+        cout << left << setw(20) << course.name << setw(15) << fixed << setprecision(2) << course.gradePoints << setw(15) << course.creditHours << setw(15) << fixed << setprecision(2) << course.gradePointTotal << endl;
+    }
+    cout << "----------------------------------------" << endl;
+    cout << left << setw(20) << "Total" << setw(15) << " " << setw(15) << semesterTotalCredits << setw(15) << semesterTotalGradePoints << endl;
+    cout << "----------------------------------------" << endl;
+    cout << "Semester GPA: " << fixed << setprecision(2) << semesterGPA << endl;
+
+    // CGPA Calculation (for simplicity, this example assumes only one semester)
+    // For multi-semester CGPA, you would need to store total grade points and total credits
+    // from previous semesters and update them here.
+    //
+    // For the current example, the semester GPA is the final CGPA.
+    double cgpa = semesterGPA;
+
+    cout << "\nOverall CGPA: " <<
